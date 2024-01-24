@@ -39,7 +39,7 @@ namespace Mango.Services.CouponAPI.Controllers
         }
 
         [HttpGet]
-        [Route("id:int")]
+        [Route("GetById/{id}")]
         public ResponseDto Get(int id)
         {
             try
