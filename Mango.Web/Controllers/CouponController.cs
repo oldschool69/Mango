@@ -2,6 +2,7 @@
 using Mango.Web.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Mango.Web.Controllers
 {
@@ -26,5 +27,25 @@ namespace Mango.Web.Controllers
 
             return View(list);
         }
-    }
+
+        public async Task<IActionResult> CouponCreate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+		public async Task<IActionResult> CouponCreate(CouponDto model)
+		{
+            if (ModelState.IsValid)
+            {
+				ResponseDto? response = await _couponService.CreateCouponsAsync(model);
+
+				if (response != null && response.isSuccess)
+				{
+					return RedirectToAction(nameof(CouponIndex));
+				}
+			}
+			return View(model);
+		}
+	}
 }
