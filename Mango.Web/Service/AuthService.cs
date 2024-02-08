@@ -23,10 +23,11 @@ namespace Mango.Web.Service
             });
         }
 
-        public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
+        public async Task<ResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
         {
-            return await _baseService.LoginAsync(new RequestDto()
+            return await _baseService.SendAsync(new RequestDto()
             {
+                ApiType = SD.ApiType.POST,
                 Data = loginRequestDto,
                 Url = SD.AuthAPIBase + "/api/auth/login"
             });

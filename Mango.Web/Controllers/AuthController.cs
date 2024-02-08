@@ -27,16 +27,17 @@ namespace Mango.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDto obj)
         {
-            LoginResponseDto loginResponseDto = await _authService.LoginAsync(obj);
+            ResponseDto? response = await _authService.LoginAsync(obj);
 
-            if (loginResponseDto != null)
+            if (response.isSuccess == true)
             {
-                Debug.WriteLine(loginResponseDto.Token);
+                LoginResponseDto? loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Result));
+                Debug.WriteLine(loginResponseDto?.Token);
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                ModelState.AddModelError("CustomError", "Unable to login");
+                ModelState.AddModelError("CustomError", response.Message);
                 return View(obj);
             }
         }
