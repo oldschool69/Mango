@@ -86,5 +86,45 @@ namespace Mango.Web.Service
                 return dto;
             }
         }
+
+        public async Task<LoginResponseDto?> LoginAsync(RequestDto requestDto)
+        {
+            try
+            {
+                HttpClient client = _httpClientFactory.CreateClient("MangoAPI");
+                HttpRequestMessage message = new();
+                message.Headers.Add("Accept", "application/json");
+
+                message.RequestUri = new Uri(requestDto.Url);
+                if (requestDto.Data != null)
+                {
+                    message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data),
+                        Encoding.UTF8, "application/json");
+                }
+
+                HttpResponseMessage? apiResponse = null;
+                message.Method = HttpMethod.Post;
+
+                apiResponse = await client.SendAsync(message);
+
+                if (apiResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    var apiContent = await apiResponse.Content.ReadAsStringAsync();
+                    var apiResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(apiContent);
+                    return apiResponseDto;
+
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
     }
 }
