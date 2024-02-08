@@ -120,7 +120,7 @@ namespace Mango.Web.Service
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
