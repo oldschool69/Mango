@@ -82,6 +82,7 @@ namespace Mango.Services.ProductAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Put([FromBody] ProductDto productDto)
         {
             try
