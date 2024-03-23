@@ -45,21 +45,27 @@ namespace Mango.Web.Controllers
 
             if (response != null && response.isSuccess)
             {
+                //From stripe site, cannot input a invalid CC, so I'll 
+                //comment this part and redirect to Confirmation without
+                //payment be successful
+
                 //get stripe session and redirect to stripe to place order
-                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+                //var domain = Request.Scheme + "://" + Request.Host.Value + "/";
 
-                StripeRequestDto stripeRequestDto = new()
-                {
-                    ApprovedUrl = domain + "cart/Confirmation?orderId=" + orderHeaderDto.OrderHeaderId,
-                    CancelUrl = domain + "cart/checkout",
-                    OrderHeader = orderHeaderDto,
-                };
+                //StripeRequestDto stripeRequestDto = new()
+                //{
+                //    ApprovedUrl = domain + "cart/Confirmation?orderId=" + orderHeaderDto.OrderHeaderId,
+                //    CancelUrl = domain + "cart/checkout",
+                //    OrderHeader = orderHeaderDto,
+                //};
 
-                var stripeResponse = await _orderService.CreateStripeSession(stripeRequestDto);
-                StripeRequestDto stripeResponseResult = JsonConvert.DeserializeObject<StripeRequestDto>
-                       (Convert.ToString(stripeResponse.Result));
-                Response.Headers.Add("Location", stripeResponseResult.StripeSessionUrl);
-                return new StatusCodeResult(303);
+                //var stripeResponse = await _orderService.CreateStripeSession(stripeRequestDto);
+                //StripeRequestDto stripeResponseResult = JsonConvert.DeserializeObject<StripeRequestDto>
+                //       (Convert.ToString(stripeResponse.Result));
+                //Response.Headers.Add("Location", stripeResponseResult.StripeSessionUrl);
+                //return new StatusCodeResult(303);
+                //RedirectToAction(nameof(Confirmation));
+                return RedirectToAction("Confirmation", new { orderId = orderHeaderDto.OrderHeaderId });
             }
 
             return View();
